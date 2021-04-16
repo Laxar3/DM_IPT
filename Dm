@@ -1,1 +1,10 @@
+
 import numpy as np
+import matplotlib.pyplot as plt
+
+# Q1
+def Newton(f,df,e,x0):
+    x = x0
+    while abs(f(x)) > e:
+        x -= f(x0)/df(x0)
+    return x
