@@ -1,12 +1,100 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # Q1
-def Newton(f,df,e,x0):
+def Newton(f,e,x0):
     x = x0
+    h = 1E-9
     while abs(f(x)) > e:
-        x -= f(x0)/df(x0)
+        df = (f(x+h)-f(x))/h
+        x -= f(x)/df
     return x
 
 
-print("lol")
+# Q2
+"""
+Pour une fonction à deux variable, il faut résoudre f(t1,t2) = 0.
+"""
+
+# Q3
+def Newton2(f,e,x0,y0):
+    x = x0
+    y = y0
+    h = 1E-9
+    while abs(f(x,y0)) > e:
+        df = (f(x+h,y0)-f(x,y0))/h
+        x -= f(x,y0)/df
+    while abs(f(x0,y)) > e:
+        df = (f(x0,y+h)-f(x0,y))/h
+        y -= f(x0,y)/df
+    return x,y
+
+
+# Q4
+Tmax = 100
+N = 10000
+h = Tmax/N
+T = np.linspace(0,Tmax,N+1)
+
+# Q5
+K = 1
+w0 = 1
+m = 1
+def f1(ti,yi):
+    res = np.array([yi[1] , (K*w0**2 - w0**2*yi[0] - 2*m*w0*yi[1])])
+    return res
+
+
+# Q6
+"""
+Y(i+1) = F(ti,Y(i))*h + Y(i)
+"""
+
+# Q7
+Y0=np.array([0, 0])
+def EulerExplicite(Yini, h, Tmax, F):
+    Y=Yini
+    SY=np.zeros([int(Tmax/h)+1,2])
+    SY[0,:]=Y
+    t=0
+    for k in range(int(Tmax/h)):
+        t+=h
+        SY[k+1,:]=SY[k,:]+F(t,SY[k,:])*h
+    return SY
+
+
+SY=EulerExplicite(Y0,h,Tmax,f1)
+
+
+# Q8
+
+"""
+Si le pas de temps diminue, on a plus de valeur donc l'erreur diminue
+"""
+
+
+# Q9
+
+"""
+La complecixité est en O(N)=O(Tmax/h), Donc quand h est divisé d'un facteur 10, N est augmenter d'un facteur 1 donc le temps de calcul est multiplié par 10
+"""
+
+
+# Q10
+
+"""
+IDK
+"""
+
+
+# Q11
+
+
+
+
+def TestConvergence(t, w):
+    for i in range(int(0.9*len(t)),len(t)):
+        if not(w(t[i]) > 0.999*w(t[-1]) and w(t[i]) < 1.001*w(t[-1])):
+            return False
+    return True
